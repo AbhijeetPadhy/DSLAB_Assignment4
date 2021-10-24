@@ -8,8 +8,6 @@ const char TEST[] = "input_file.txt";
 
 Graph *read_from_file(int variant){
 	FILE *fptr;
-	char operation[7];
-	int element = 0;
 	if ((fptr = fopen(TEST,"r")) == NULL){
 		printf("Error! opening file\n");
 		throw "read_from_file() : File Read Exception!";
@@ -29,10 +27,35 @@ Graph *read_from_file(int variant){
 			graph->add_edge(src, dest);	
 		
 	}
+	fclose(fptr);
 	return graph;
 }
 
+Graph *read_from_file(){
+	int choice = 0;
+	Graph *graph = NULL;
+	do{
+		cout<< "Does the input file include weights?"<<endl;
+		cout<< "1. Yes"<<endl;
+		cout<< "2. No"<<endl;
+		cout<<"\nPress 0 to quit.";
+		cout<<"\nEnter Your Choice: ";
+		cin>>choice;
+		if(choice == 1)
+			graph = read_from_file(1);
+		else if(choice == 2)
+			graph = read_from_file(0);
+	}while(choice != 0 && choice != 1 && choice != 2);
+	
+	
+	return graph;
+}
+
+
+
 void print_graph(Graph *graph){
+	if(graph == NULL)
+		return;
 	int V = graph->get_num_vertices();
 	for(int i=0;i<V;i++){
 		cout << i;
@@ -45,13 +68,40 @@ void print_graph(Graph *graph){
 }
 
 int main(int argc, char** argv) {
-	Graph *graph;
+	Graph *graph = NULL;
+	int choice = 0;
 	
-	try{
-		graph = read_from_file(0);
-	}catch(const char *msg){
-		cout<< msg << endl;
-	}
+	do{
+		cout<<"\nThis is an implementation of Graph"<<endl;
+		cout<<"--------------------------------------------------------"<<endl;
+		cout<<"1. Create a new graph manually."<<endl;
+		cout<<"2. Create a new graph from file input."<<endl;
+		cout<<"3. Print graph on terminal."<<endl;
+		cout<<"4. Print graph on image using Graphviz."<<endl;
+		cout<<"\nPress 0 to quit.";
+		cout<<"\nEnter Your Choice: ";
+		cin>>choice;
+		cout<<"\n------------------OPERATION-------------------"<<endl;
+		switch(choice){
+			case 0:
+				break;
+			case 1:
+				break;
+			case 2:
+				delete(graph);
+				try{
+					graph = read_from_file();
+				}catch(const char *msg){
+					cout<< msg << endl;
+				}
+				break;
+			case 3:
+				print_graph(graph);
+				break;
+			case 4:
+				break;
+		}
+	}while(choice != 0);
 	print_graph(graph);
 	return 0;
 }
