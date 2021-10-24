@@ -75,8 +75,16 @@ void dfs_traversal(Graph *graph, bool visited[], int discovery_time[], int finis
 	
 	for(int i=0; i<no_of_adj_vertices;i++){
 		int v = graph->adj[u].at(i).first;
-		if(!visited[v])
+		int w = graph->adj[u].at(i).second;
+		if(!visited[v]){
+			// tree edge
 			dfs_traversal(graph, visited, discovery_time, finish_time, v, fptr);
+			fprintf(fptr,"\"%d\" -> \"%d\" [label = \"T/%d\"];\n",u,v,w);
+		}
+		
+		// forward edges
+		else if(discovery_time[u] < discovery_time[v] && finish_time[v] <= cur_time)
+			fprintf(fptr,"\"%d\" -> \"%d\" [style = dotted, label = \"F/%d\"];\n",u,v,w);
 	}
 	
 	finish_time[u] = ++cur_time;
@@ -117,19 +125,13 @@ void dfs_traversal(Graph *graph){
 			if(discovery_time[v] < finish_time[v] && 
 				finish_time[v] < discovery_time[u] &&
 				discovery_time[u] < finish_time[u])
-				fprintf(fptr,"\"%d\" -> \"%d\" [style = dotted, color = green, label = \"%d\"];\n",u,v,w);
+				fprintf(fptr,"\"%d\" -> \"%d\" [style = dotted, label = \"C/%d\"];\n",u,v,w);
 			
 			//back edge
 			else if(discovery_time[v] <= discovery_time[u] && 
 				discovery_time[u] < finish_time[u] &&
 				finish_time[u] <= finish_time[v])
-				fprintf(fptr,"\"%d\" -> \"%d\" [style = dotted, label = \"%d\"];\n",u,v,w);
-				
-			//tree edge or forward edge
-			else if(discovery_time[u] < discovery_time[v] && 
-				discovery_time[v] < finish_time[v] &&
-				finish_time[v] < finish_time[u])
-				fprintf(fptr,"\"%d\" -> \"%d\" [label = \"%d\"];\n",u,v,w);
+				fprintf(fptr,"\"%d\" -> \"%d\" [style = dotted, label = \"B/%d\"];\n",u,v,w);
 		}
 	}
 	
