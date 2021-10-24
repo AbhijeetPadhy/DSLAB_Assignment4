@@ -12,11 +12,11 @@ Graph::Graph(int v)
 	adj = new vector<pair<int,int>>[V];
 }
 
-int Graph::addEdge(int src, int dest){
-	return addEdge(src, dest, 1);
+int Graph::add_edge(int src, int dest){
+	return add_edge(src, dest, 1);
 }
 
-int Graph::addEdge(int src, int dest, int weight){
+int Graph::add_edge(int src, int dest, int weight){
 	if(src >= V || src < 0 || dest >= V || dest < 0)
 		return 1;
 	pair<int, int> edge(dest, weight);

@@ -24,9 +24,9 @@ Graph *read_from_file(int variant){
 		fscanf(fptr, "%d", &dest);
 		if(variant == 1){
 			fscanf(fptr, "%d", &weight);
-			graph->addEdge(src, dest, weight);
+			graph->add_edge(src, dest, weight);
 		}else
-			graph->addEdge(src, dest);	
+			graph->add_edge(src, dest);	
 		
 	}
 	return graph;

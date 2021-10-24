@@ -13,8 +13,8 @@ class Graph
 	public:
 		Graph();
 		Graph(int);
-		int addEdge(int, int);
-		int addEdge(int, int, int);
+		int add_edge(int, int);
+		int add_edge(int, int, int);
 		int get_num_vertices();
 		~Graph();
 	protected:
