@@ -1,4 +1,5 @@
 #include "Graph.h"
+#include "min_heap.h"
 
 Graph::Graph()
 {
@@ -26,6 +27,36 @@ int Graph::add_edge(int src, int dest, int weight){
 
 int Graph::get_num_vertices(){
 	return V;
+}
+
+void Graph::dijsktras_shortest_path_algorithm(int S){
+	min_heap *heap = new min_heap(V);
+	int dist[V];
+	for(int i=0;i<V;i++){
+		dist[i] = INT_MAX;
+		if(i == S)
+			dist[i] = 0;
+		heap->push(make_pair(i, dist[i]));
+	}
+	
+	while(heap->size() != 0){
+		
+        pair<int,int> u = heap->pop();
+        int no_of_adj_nodes = adj[u.first].size();
+        
+		for(int j=0;j<no_of_adj_nodes;j++){
+            int v = adj[u.first].at(j).first;
+            int weight = adj[u.first].at(j).second;
+			if(u.second != INT_MAX && u.second + weight < dist[v]){
+                dist[v] = u.second + weight;
+				heap->decrease_key(v, dist[v]);
+            }
+        }
+    }
+    
+    for(int i=0;i<V;i++){
+    	cout<<"Node "<<i<<" has dist = " << dist[i]<<endl;
+	}
 }
 
 Graph::~Graph()

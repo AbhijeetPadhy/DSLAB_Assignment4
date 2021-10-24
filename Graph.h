@@ -4,6 +4,13 @@
 
 using namespace std;
 
+class MyComp{
+	public:
+		int operator()(const pair<int,int> &a, const pair<int,int> &b){
+			return a.second > b.second;
+		}
+};
+
 class Graph
 {
 	public:
@@ -16,6 +23,7 @@ class Graph
 		int add_edge(int, int);
 		int add_edge(int, int, int);
 		int get_num_vertices();
+		void dijsktras_shortest_path_algorithm(int);
 		~Graph();
 	protected:
 };

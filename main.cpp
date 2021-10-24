@@ -1,3 +1,5 @@
+// TODO: what if an edge is already present!
+
 #include <iostream>
 #include "Graph.h"
 
@@ -144,6 +146,7 @@ void dfs_traversal(Graph *graph){
 int main(int argc, char** argv) {
 	Graph *graph = NULL;
 	int choice = 0;
+	int element = 0;
 	
 	do{
 		cout<<"\nThis is an implementation of Graph"<<endl;
@@ -152,6 +155,7 @@ int main(int argc, char** argv) {
 		cout<<"2. Create a new graph from file input."<<endl;
 		cout<<"3. Print graph on terminal."<<endl;
 		cout<<"4. Print graph on image using Graphviz."<<endl;
+		cout<<"5. Compute shortest distance from a node."<<endl;
 		cout<<"\nPress 0 to quit.";
 		cout<<"\nEnter Your Choice: ";
 		cin>>choice;
@@ -175,6 +179,13 @@ int main(int argc, char** argv) {
 			case 4:
 				dfs_traversal(graph);
 				break;
+			case 5:
+				cout<< "Enter the source node: ";
+				cin >> element;
+				graph->dijsktras_shortest_path_algorithm(element);
+				break;
+			default:
+				cout<<"Wrong Choice!!"<<endl;
 		}
 	}while(choice != 0);
 	return 0;
