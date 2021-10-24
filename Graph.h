@@ -16,6 +16,7 @@ class Graph
 	public:
 	int V;
 	vector<pair<int,int>>* adj;
+	void output_dijsktra(int[]);
 	
 	public:
 		Graph();

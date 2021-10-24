@@ -40,7 +40,6 @@ void Graph::dijsktras_shortest_path_algorithm(int S){
 	}
 	
 	while(heap->size() != 0){
-		
         pair<int,int> u = heap->pop();
         int no_of_adj_nodes = adj[u.first].size();
         
@@ -57,6 +56,28 @@ void Graph::dijsktras_shortest_path_algorithm(int S){
     for(int i=0;i<V;i++){
     	cout<<"Node "<<i<<" has dist = " << dist[i]<<endl;
 	}
+	output_dijsktra(dist);
+}
+
+void Graph::output_dijsktra(int dist[]){
+	FILE *fptr;
+	fptr = fopen("dijsktra_output.gv","w");
+	fprintf(fptr,"digraph G {\n");
+
+	for(int u=0;u<V;u++){
+		if(dist[u] != INT_MAX)
+			fprintf(fptr,"%d [label = \" %d / %d \"];\n", u, u, dist[u]);
+		else
+			fprintf(fptr,"%d [label = \" %d / unreachable \"];\n", u, u);
+		
+		int size = adj[u].size();
+		for(int j=0;j<size;j++){
+			int v = adj[u].at(j).first;
+			fprintf(fptr,"\"%d\" -> \"%d\";\n",u,v);
+		}
+	}
+	fprintf(fptr,"}");
+	fclose(fptr);
 }
 
 Graph::~Graph()

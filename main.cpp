@@ -137,8 +137,6 @@ void dfs_traversal(Graph *graph){
 		}
 	}
 	
-		
-	
 	fprintf(fptr,"}");
 	fclose(fptr);
 }
@@ -183,6 +181,9 @@ int main(int argc, char** argv) {
 				cout<< "Enter the source node: ";
 				cin >> element;
 				graph->dijsktras_shortest_path_algorithm(element);
+				cout<<"Please run the below command to create the image:"<<endl;
+				cout<<"step 1: dot -Tpng dijsktra_output.gv -o dijsktra_output.png"<<endl;
+				cout<<"step 2: Open the file dijsktra_output.png to view the output."<<endl;
 				break;
 			default:
 				cout<<"Wrong Choice!!"<<endl;
