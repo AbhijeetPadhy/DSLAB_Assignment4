@@ -1,4 +1,9 @@
-// TODO: what if an edge is already present!
+/*
+ * TODO
+ * -----------------------
+ * 1. what if an edge is already present!
+ * 2. Modify Dijsktra to include dest vertex!
+ */
 
 #include <iostream>
 #include "Graph.h"
@@ -18,11 +23,11 @@ Graph *read_from_file(){
 		cin>>choice;
 		if(choice == 1){
 			graph = new Graph();
-			graph->read_from_file("input_file.txt", 1);
+			graph->read_from_file(1);
 		}
 		else if(choice == 2){
 			graph = new Graph();
-			graph->read_from_file("input_file.txt", 0);
+			graph->read_from_file(0);
 		}
 	}while(choice != 0 && choice != 1 && choice != 2);
 	return graph;
@@ -41,6 +46,7 @@ int main(int argc, char** argv) {
 		cout<<"3. Print graph on terminal."<<endl;
 		cout<<"4. Print graph on image using Graphviz."<<endl;
 		cout<<"5. Compute shortest distance from a node."<<endl;
+		cout<<"6. Find all strongly connected components using Tarjan's algorithm."<<endl;
 		cout<<"\nPress 0 to quit.";
 		cout<<"\nEnter Your Choice: ";
 		cin>>choice;
@@ -74,6 +80,10 @@ int main(int argc, char** argv) {
 				cout<<"Please run the below command to create the image:"<<endl;
 				cout<<"step 1: dot -Tpng dijsktra_output.gv -o dijsktra_output.png"<<endl;
 				cout<<"step 2: Open the file dijsktra_output.png to view the output."<<endl;
+				break;
+			case 6:
+				if(graph != NULL)
+					graph->find_scc();
 				break;
 			default:
 				cout<<"Wrong Choice!!"<<endl;

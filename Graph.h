@@ -1,6 +1,7 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 #include<bits/stdc++.h>
+#define TEST "input_file.txt"
 
 using namespace std;
 
@@ -18,6 +19,7 @@ class Graph
 	void output_dijsktra(int[]);
 	int cur_time = 0;
 	void dfs_traversal(bool[], int[], int[], int, FILE *);
+	void find_scc(int, bool[], int[], bool[], stack<int>*, int[], vector<vector<int>>*);
 	
 	public:
 		Graph();
@@ -26,9 +28,10 @@ class Graph
 		int add_edge(int, int, int);
 		int get_num_vertices();
 		void dijsktras_shortest_path_algorithm(int);
-		void read_from_file(char[], int);
+		void read_from_file(int);
 		void print_graph();
 		void dfs_traversal();
+		void find_scc();
 		~Graph();
 	protected:
 };

@@ -80,7 +80,7 @@ void Graph::output_dijsktra(int dist[]){
 	fclose(fptr);
 }
 
-void Graph::read_from_file(char TEST[], int variant){
+void Graph::read_from_file(int variant){
 	FILE *fptr;
 	if ((fptr = fopen(TEST,"r")) == NULL){
 		printf("Error! opening file\n");
@@ -90,7 +90,6 @@ void Graph::read_from_file(char TEST[], int variant){
 	
 	fscanf(fptr, "%d", &no_of_vertices);
 	fscanf(fptr, "%d", &no_of_edges);
-	//Graph * graph = new Graph(no_of_vertices);
 	V = no_of_vertices;
 	adj = new vector<pair<int,int>>[V];
 	for(int i=0;i<no_of_edges;i++){
@@ -188,6 +187,75 @@ void Graph::dfs_traversal(){
 	
 	fprintf(fptr,"}");
 	fclose(fptr);
+}
+
+void Graph::find_scc(int u, bool visited[], int disc[], bool stackArray[], stack<int> *stk, int low[], vector<vector<int>> *result){
+	visited[u] = true;
+	low[u] = disc[u] = ++cur_time;
+	stk->push(u);
+	stackArray[u] = true;
+	
+	int no_of_adj_nodes = adj[u].size();
+	for(int i=0;i<no_of_adj_nodes;i++){
+		int v = adj[u].at(i).first;
+		// Tree Edge
+		if(!visited[v]){
+			find_scc(v, visited, disc, stackArray, stk, low, result);
+			low[u] = (low[u] < low[v])? low[u] : low[v];
+		}
+		// Back Edge
+		else if(stackArray[v]){
+			low[u] = (low[u] < disc[v])? low[u] : disc[v];
+		}
+	}
+	
+	// Head Node
+	if(low[u] == disc[u]){
+		vector<int> *sccs = new vector<int>();
+		int w = -1;
+		while(w != u){
+			
+			w = stk->top();
+			stk->pop();
+			sccs->push_back(w);
+			stackArray[w] = false;
+		}
+		result->push_back(*sccs);
+	}
+}
+
+void Graph::find_scc(){
+	cur_time = 0;
+	
+	bool *visited = new bool[V];
+	memset(visited, false, sizeof(visited));
+	
+	int *disc = new int[V];
+	memset(disc, 0, sizeof(disc));
+	
+	bool *stackArray = new bool[V];
+	memset(stackArray, false, sizeof(stackArray));
+	
+	int *low = new int[V];
+	memset(low, 0, sizeof(low));
+	
+	stack<int> *stk = new stack<int>();
+	vector<vector<int>> *result = new vector<vector<int>>();
+	
+	for(int i=0;i<V;i++){
+		if(!visited[i])
+			find_scc(i, visited, disc, stackArray, stk, low, result);
+	}
+	
+	cout<<"The connected components are: "<<endl;
+	int no_of_scc = result->size();
+	for(int i=0;i<no_of_scc;i++){
+		int size_of_scc = result->at(i).size();
+		for(int j=0;j<size_of_scc;j++){
+			cout << result->at(i).at(j) << " ";
+		}
+		cout<<endl;
+	}
 }
 
 Graph::~Graph()
