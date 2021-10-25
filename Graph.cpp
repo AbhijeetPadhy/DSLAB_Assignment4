@@ -4,7 +4,7 @@
 Graph::Graph()
 {
 	V = 0;
-	adj = new vector<pair<int,int>>[V];
+	//adj = new vector<pair<int,int>>[V];
 }
 
 Graph::Graph(int v)
@@ -76,6 +76,116 @@ void Graph::output_dijsktra(int dist[]){
 			fprintf(fptr,"\"%d\" -> \"%d\";\n",u,v);
 		}
 	}
+	fprintf(fptr,"}");
+	fclose(fptr);
+}
+
+void Graph::read_from_file(char TEST[], int variant){
+	FILE *fptr;
+	if ((fptr = fopen(TEST,"r")) == NULL){
+		printf("Error! opening file\n");
+		throw "read_from_file() : File Read Exception!";
+	}
+	int no_of_vertices = 0, no_of_edges = 0, src = 0, dest = 0, weight = 0;
+	
+	fscanf(fptr, "%d", &no_of_vertices);
+	fscanf(fptr, "%d", &no_of_edges);
+	//Graph * graph = new Graph(no_of_vertices);
+	V = no_of_vertices;
+	adj = new vector<pair<int,int>>[V];
+	for(int i=0;i<no_of_edges;i++){
+		fscanf(fptr, "%d", &src);
+		fscanf(fptr, "%d", &dest);
+		if(variant == 1){
+			fscanf(fptr, "%d", &weight);
+			add_edge(src, dest, weight);
+		}else
+			add_edge(src, dest);	
+		
+	}
+	fclose(fptr);
+}
+
+void Graph::print_graph(){
+	if(V == 0)
+		return;
+		
+	for(int i=0;i<V;i++){
+		cout << i;
+		int size = adj[i].size();
+		for(int j=0;j<size;j++){
+			cout<< "->" <<adj[i].at(j).first;
+		}
+		cout << endl;
+	}
+}
+
+void Graph::dfs_traversal(bool visited[], int discovery_time[], int finish_time[], int u, FILE *fptr){
+	visited[u] = true;
+	discovery_time[u] = ++cur_time;
+	int no_of_adj_vertices = adj[u].size();
+	
+	for(int i=0; i<no_of_adj_vertices;i++){
+		int v = adj[u].at(i).first;
+		int w = adj[u].at(i).second;
+		if(!visited[v]){
+			// tree edge
+			dfs_traversal(visited, discovery_time, finish_time, v, fptr);
+			fprintf(fptr,"\"%d\" -> \"%d\" [label = \"T/%d\"];\n",u,v,w);
+		}
+		
+		// forward edges
+		else if(discovery_time[u] < discovery_time[v] && finish_time[v] <= cur_time)
+			fprintf(fptr,"\"%d\" -> \"%d\" [style = dotted, label = \"F/%d\"];\n",u,v,w);
+	}
+	
+	finish_time[u] = ++cur_time;
+	fprintf(fptr,"%d [label = \" %d  %d/%d \"];\n", u, u, discovery_time[u], finish_time[u]);
+	
+}
+
+void Graph::dfs_traversal(){
+	FILE *fptr;
+	fptr = fopen("graph.gv","w");
+	fprintf(fptr,"digraph G {\n");
+	//fprintf(fptr,"node [shape = record,height=.1];\n");
+	
+	cur_time = 0;
+	
+	bool visited[V];
+	memset(visited, false, sizeof(visited));
+	
+	int discovery_time[V];
+	memset(discovery_time, 0, sizeof(discovery_time));
+	
+	int finish_time[V];
+	memset(finish_time, 0, sizeof(finish_time));
+	
+	
+	for(int i=0;i<V;i++){
+		if(!visited[i])
+			dfs_traversal(visited, discovery_time, finish_time, i, fptr);
+	}
+	
+	for(int u = 0; u < V; u++){
+		int no_of_adj_vertices = adj[u].size();
+		for(int i=0; i<no_of_adj_vertices;i++){
+			int v = adj[u].at(i).first;
+			int w = adj[u].at(i).second;
+			//cross edge
+			if(discovery_time[v] < finish_time[v] && 
+				finish_time[v] < discovery_time[u] &&
+				discovery_time[u] < finish_time[u])
+				fprintf(fptr,"\"%d\" -> \"%d\" [style = dotted, label = \"C/%d\"];\n",u,v,w);
+			
+			//back edge
+			else if(discovery_time[v] <= discovery_time[u] && 
+				discovery_time[u] < finish_time[u] &&
+				finish_time[u] <= finish_time[v])
+				fprintf(fptr,"\"%d\" -> \"%d\" [style = dotted, label = \"B/%d\"];\n",u,v,w);
+		}
+	}
+	
 	fprintf(fptr,"}");
 	fclose(fptr);
 }

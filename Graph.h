@@ -13,10 +13,11 @@ class MyComp{
 
 class Graph
 {
-	public:
 	int V;
 	vector<pair<int,int>>* adj;
 	void output_dijsktra(int[]);
+	int cur_time = 0;
+	void dfs_traversal(bool[], int[], int[], int, FILE *);
 	
 	public:
 		Graph();
@@ -25,6 +26,9 @@ class Graph
 		int add_edge(int, int, int);
 		int get_num_vertices();
 		void dijsktras_shortest_path_algorithm(int);
+		void read_from_file(char[], int);
+		void print_graph();
+		void dfs_traversal();
 		~Graph();
 	protected:
 };
