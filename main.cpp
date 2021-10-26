@@ -47,6 +47,7 @@ int main(int argc, char** argv) {
 		cout<<"4. Print graph on image using Graphviz."<<endl;
 		cout<<"5. Compute shortest distance from a node."<<endl;
 		cout<<"6. Find all strongly connected components using Tarjan's algorithm."<<endl;
+		cout<<"7. Determine whether graph is semi-connected."<<endl;
 		cout<<"\nPress 0 to quit.";
 		cout<<"\nEnter Your Choice: ";
 		cin>>choice;
@@ -93,8 +94,15 @@ int main(int argc, char** argv) {
 						}
 						cout<<endl;
 					}
+				}	
+				break;
+			case 7:
+				if(graph != NULL){
+					if(graph->is_semi_connected())
+						cout<<"The graph is semi connected!"<<endl;
+					else
+						cout<<"The graph is not semi connected!"<<endl;
 				}
-					
 				break;
 			default:
 				cout<<"Wrong Choice!!"<<endl;

@@ -20,6 +20,7 @@ class Graph
 	int cur_time = 0;
 	void dfs_traversal(bool[], int[], int[], int, FILE *);
 	void find_scc(int, bool[], int[], bool[], stack<int>*, int[], vector<vector<int>>*);
+	void topoSortUtil(int, Graph *, stack<int> *, bool[]);
 	
 	public:
 		Graph();
@@ -32,6 +33,8 @@ class Graph
 		void print_graph();
 		void dfs_traversal();
 		vector<vector<int>> *find_scc();
+		int *topo_sort(Graph *graph);
+		bool is_semi_connected();
 		~Graph();
 	protected:
 };

@@ -246,9 +246,82 @@ vector<vector<int>> *Graph::find_scc(){
 		if(!visited[i])
 			find_scc(i, visited, disc, stackArray, stk, low, result);
 	}
-	
-	
 	return result;
+}
+
+void Graph::topoSortUtil(int u, Graph *graph, stack<int> *stk, bool visited[]){
+        visited[u] = true;
+        int no_of_adj_nodes = graph->adj[u].size();
+        for(int i=0;i<no_of_adj_nodes;i++){
+            int v = graph->adj[u].at(i).first;
+            if(!visited[v])
+                topoSortUtil(v, graph, stk, visited);
+        }
+        stk->push(u);
+}
+
+int *Graph::topo_sort(Graph *graph){
+	int vertices = graph->V;
+	stack<int> *stk = new stack<int>();
+	bool *visited = new bool[vertices];
+	memset(visited, false, sizeof(visited));
+	int *result = new int[vertices];
+	int top = -1;
+	
+	for(int u=0;u<vertices;u++){
+		if(!visited[u])
+			topoSortUtil(u, graph, stk, visited);
+	}
+	
+	while(stk->size()!=0){
+		result[++top] = stk->top();
+		stk->pop();
+	}
+	return result;
+}
+
+bool Graph::is_semi_connected(){
+	vector<vector<int>> *vector_of_scc = find_scc();
+	int no_of_scc = vector_of_scc->size();
+	Graph *component_graph = new Graph(no_of_scc);
+	
+	int scc_of_nodes[V];
+	
+	for(int i=0;i<no_of_scc;i++){
+		int size_of_scc = vector_of_scc->at(i).size();
+		for(int j=0;j<size_of_scc;j++){
+			scc_of_nodes[vector_of_scc->at(i).at(j)] = i;
+		}
+	}
+	
+	// find edges between components
+	for(int i=0;i<V;i++){
+		int no_of_adj_nodes = adj[i].size();
+		for(int j=0;j<no_of_adj_nodes;j++){
+			int src = scc_of_nodes[i];
+			int dest = scc_of_nodes[j];
+			if(src != dest){
+				component_graph->add_edge(src,dest);
+			}
+		}
+	}
+	
+	//topological sort
+	int *topo_sorted_array = topo_sort(component_graph);
+	bool flag = false;
+	for(int i=0;i<no_of_scc-1;i++){
+		int no_of_adj_nodes = component_graph->adj[i].size();
+		flag = false;
+		for(int j=0;j<no_of_adj_nodes;j++){
+			if(component_graph->adj[i].at(j).first == i+1){
+				flag == true;
+				break;
+			}
+		}
+		if(flag == false)
+			return false;
+	}
+	return true;
 }
 
 Graph::~Graph()
