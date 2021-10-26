@@ -82,8 +82,19 @@ int main(int argc, char** argv) {
 				cout<<"step 2: Open the file dijsktra_output.png to view the output."<<endl;
 				break;
 			case 6:
-				if(graph != NULL)
-					graph->find_scc();
+				if(graph != NULL){
+					vector<vector<int>> *result = graph->find_scc();
+					cout<<"The strongly connected components are: "<<endl;
+					int no_of_scc = result->size();
+					for(int i=0;i<no_of_scc;i++){
+						int size_of_scc = result->at(i).size();
+						for(int j=0;j<size_of_scc;j++){
+							cout << result->at(i).at(j) << " ";
+						}
+						cout<<endl;
+					}
+				}
+					
 				break;
 			default:
 				cout<<"Wrong Choice!!"<<endl;

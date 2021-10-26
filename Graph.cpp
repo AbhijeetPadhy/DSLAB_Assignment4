@@ -224,7 +224,7 @@ void Graph::find_scc(int u, bool visited[], int disc[], bool stackArray[], stack
 	}
 }
 
-void Graph::find_scc(){
+vector<vector<int>> *Graph::find_scc(){
 	cur_time = 0;
 	
 	bool *visited = new bool[V];
@@ -247,15 +247,8 @@ void Graph::find_scc(){
 			find_scc(i, visited, disc, stackArray, stk, low, result);
 	}
 	
-	cout<<"The connected components are: "<<endl;
-	int no_of_scc = result->size();
-	for(int i=0;i<no_of_scc;i++){
-		int size_of_scc = result->at(i).size();
-		for(int j=0;j<size_of_scc;j++){
-			cout << result->at(i).at(j) << " ";
-		}
-		cout<<endl;
-	}
+	
+	return result;
 }
 
 Graph::~Graph()

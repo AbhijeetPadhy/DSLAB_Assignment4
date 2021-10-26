@@ -31,7 +31,7 @@ class Graph
 		void read_from_file(int);
 		void print_graph();
 		void dfs_traversal();
-		void find_scc();
+		vector<vector<int>> *find_scc();
 		~Graph();
 	protected:
 };
