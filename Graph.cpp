@@ -224,6 +224,33 @@ void Graph::find_scc(int u, bool visited[], int disc[], bool stackArray[], stack
 	}
 }
 
+void Graph::output_scc(vector<vector<int>> *scc){
+	FILE *fptr;
+	fptr = fopen("tarjan.gv","w");
+	fprintf(fptr,"digraph G {\n");
+	
+	for(int i=0;i<scc->size();i++){
+		fprintf(fptr,"subgraph cluster%d {\n", i+1);
+		fprintf(fptr,"color=blue;\n");
+		fprintf(fptr,"label = \"component #%d\";\n",i+1);
+		for(int j=0;j<scc->at(i).size();j++){
+			int v = scc->at(i).at(j);
+			fprintf(fptr,"%d [label = \" %d \"];\n", v, v);
+		}
+		fprintf(fptr,"}\n");
+	}
+	
+	for(int u=0;u<V;u++){
+		int size = adj[u].size();
+		for(int j=0;j<size;j++){
+			int v = adj[u].at(j).first;
+			fprintf(fptr,"\"%d\" -> \"%d\";\n",u,v);
+		}
+	}
+	fprintf(fptr,"}");
+	fclose(fptr);
+}
+
 vector<vector<int>> *Graph::find_scc(){
 	cur_time = 0;
 	
@@ -246,6 +273,7 @@ vector<vector<int>> *Graph::find_scc(){
 		if(!visited[i])
 			find_scc(i, visited, disc, stackArray, stk, low, result);
 	}
+	output_scc(result);
 	return result;
 }
 

@@ -76,11 +76,13 @@ int main(int argc, char** argv) {
 			case 5:
 				cout<< "Enter the source node: ";
 				cin >> element;
-				if(graph != NULL)
+				if(graph != NULL){
 					graph->dijsktras_shortest_path_algorithm(element);
-				cout<<"Please run the below command to create the image:"<<endl;
-				cout<<"step 1: dot -Tpng dijsktra_output.gv -o dijsktra_output.png"<<endl;
-				cout<<"step 2: Open the file dijsktra_output.png to view the output."<<endl;
+					cout<<"Please run the below command to create the image:"<<endl;
+					cout<<"step 1: dot -Tpng dijsktra_output.gv -o dijsktra_output.png"<<endl;
+					cout<<"step 2: Open the file dijsktra_output.png to view the output."<<endl;
+				}
+					
 				break;
 			case 6:
 				if(graph != NULL){
@@ -94,6 +96,9 @@ int main(int argc, char** argv) {
 						}
 						cout<<endl;
 					}
+					cout<<"Please run the below command to create the image:"<<endl;
+					cout<<"step 1: dot -Tpng tarjan.gv -o tarjan.png"<<endl;
+					cout<<"step 2: Open the file tarjan.png to view the output."<<endl;
 				}	
 				break;
 			case 7:

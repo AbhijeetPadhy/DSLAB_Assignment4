@@ -1,7 +1,7 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 #include<bits/stdc++.h>
-#define TEST "input_file_4.txt"
+#define TEST "input_file_3.txt"
 
 using namespace std;
 
@@ -21,6 +21,7 @@ class Graph
 	void dfs_traversal(bool[], int[], int[], int, FILE *);
 	void find_scc(int, bool[], int[], bool[], stack<int>*, int[], vector<vector<int>>*);
 	void topoSortUtil(int, Graph *, stack<int> *, bool[]);
+	void output_scc(vector<vector<int>> *);
 	
 	public:
 		Graph();
