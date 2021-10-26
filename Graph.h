@@ -1,7 +1,7 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 #include<bits/stdc++.h>
-#define TEST "input_file.txt"
+#define TEST "input_file_4.txt"
 
 using namespace std;
 
