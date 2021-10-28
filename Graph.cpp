@@ -80,9 +80,9 @@ void Graph::output_dijsktra(int dist[]){
 	fclose(fptr);
 }
 
-void Graph::read_from_file(int variant){
+void Graph::read_from_file(int variant, char *filename){
 	FILE *fptr;
-	if ((fptr = fopen(TEST,"r")) == NULL){
+	if ((fptr = fopen(filename,"r")) == NULL){
 		printf("Error! opening file\n");
 		throw "read_from_file() : File Read Exception!";
 	}
@@ -373,6 +373,112 @@ bool Graph::is_semi_connected(){
 			return false;
 	}
 	return true;
+}
+
+Graph *Graph::clone_graph(){
+	Graph *graph = new Graph(V);
+	for(int i=0;i<V;i++){
+		int no_of_adj_nodes = adj[i].size();
+		for(int j=0;j<no_of_adj_nodes; j++){
+			int v = adj[i][j].first;
+			int w = adj[i][j].second;
+			graph->add_edge(i,v,w);
+		}
+	}
+	return graph;
+}
+
+void Graph::remove_edge(int u, int v){
+	cout<<"Removing edge "<<u<<"->"<<v<<endl;
+	vector<pair<int,int>> edges;
+	int no_of_adj_nodes = adj[u].size();
+	for(int i=0;i<no_of_adj_nodes;i++){
+		int d = adj[u][i].first;
+		int w = adj[u][i].second;
+		pair<int, int> edge(d, w);
+		if(d != v)
+			edges.push_back(edge);
+	}
+	
+	// clear the current
+	adj[u].clear();
+	
+	// add the necessary edges back 
+	for(int i=0;i<edges.size();i++){
+		add_edge(u, edges[i].first, edges[i].second);
+	}
+}
+
+bool Graph::path_possible(Graph *graph, int u, int v, int e1, int e2){
+	bool *visited = new bool[V];
+	memset(visited, false, sizeof(visited));
+	list<int> queue;
+	
+	visited[u] = true;
+	queue.push_back(u);
+	
+	
+	while(queue.size()!=0){
+		int s = queue.front();
+		queue.pop_front();
+		int no_of_adj_nodes = graph->adj[s].size();
+		for(int i=0;i<no_of_adj_nodes;i++){
+			int d = graph->adj[s][i].first;
+			if(s == e1 && d == e2)
+				;
+			else if(d ==v)
+				return true;
+			else if(!visited[d]){
+				visited[d] = true;
+				queue.push_back(d);
+			}
+		}
+	}
+	return false;
+}
+
+void Graph::remove_edges_from_components(Graph *graph, vector<vector<int>> *vector_of_scc, int component, int *scc_of_nodes){
+	bool scc_connect[vector_of_scc->size()];
+	memset(scc_connect, false, sizeof(scc_connect));
+	for(int i=0;i<vector_of_scc->at(component).size();i++){
+		
+		int u = vector_of_scc->at(component).at(i);
+		int no_of_adj_nodes = adj[u].size();
+		
+		for(int j=0;j<no_of_adj_nodes;j++){
+			int v = adj[u][j].first;
+			int w = adj[u][j].second;
+			if(path_possible(graph,u,v,u,v) && path_possible(graph,v,u,u,v)){
+				graph->remove_edge(u,v);
+			}
+			if(scc_of_nodes[u] != scc_of_nodes[v]){
+				if(scc_connect[scc_of_nodes[v]] == true){
+					graph->remove_edge(u,v);
+				}else{
+					scc_connect[scc_of_nodes[v]] = true;
+				}
+			}
+		}
+	}
+}
+
+Graph *Graph::compress_graph(){
+	Graph *graph = clone_graph();
+	vector<vector<int>> *vector_of_scc = find_scc();
+	int no_of_scc = vector_of_scc->size();
+	
+	int scc_of_nodes[V];
+	
+	for(int i=0;i<no_of_scc;i++){
+		int size_of_scc = vector_of_scc->at(i).size();
+		for(int j=0;j<size_of_scc;j++){
+			scc_of_nodes[vector_of_scc->at(i).at(j)] = i;
+		}
+	}
+	for(int i=0;i<no_of_scc;i++){
+		remove_edges_from_components(graph, vector_of_scc, i, scc_of_nodes);
+	}
+	return graph;
 }
 
 Graph::~Graph()

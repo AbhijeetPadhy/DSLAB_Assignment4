@@ -14,6 +14,9 @@ using namespace std;
 Graph *read_from_file(){
 	int choice = 0;
 	Graph *graph = NULL;
+	char filename[255] = "input_file_7.txt";
+	cout<<"Enter the filename: ";
+	cin>>filename;
 	do{
 		cout<< "Does the input file include weights?"<<endl;
 		cout<< "1. Yes"<<endl;
@@ -23,11 +26,11 @@ Graph *read_from_file(){
 		cin>>choice;
 		if(choice == 1){
 			graph = new Graph();
-			graph->read_from_file(1);
+			graph->read_from_file(1, filename);
 		}
 		else if(choice == 2){
 			graph = new Graph();
-			graph->read_from_file(0);
+			graph->read_from_file(0, filename);
 		}
 	}while(choice != 0 && choice != 1 && choice != 2);
 	return graph;
@@ -35,6 +38,7 @@ Graph *read_from_file(){
 
 int main(int argc, char** argv) {
 	Graph *graph = NULL;
+	Graph *graph2 = NULL;
 	int choice = 0;
 	int element = 0;
 	
@@ -48,6 +52,7 @@ int main(int argc, char** argv) {
 		cout<<"5. Compute shortest distance from a node."<<endl;
 		cout<<"6. Find all strongly connected components using Tarjan's algorithm."<<endl;
 		cout<<"7. Determine whether graph is semi-connected."<<endl;
+		cout<<"8. Compress the graph."<<endl;
 		cout<<"\nPress 0 to quit.";
 		cout<<"\nEnter Your Choice: ";
 		cin>>choice;
@@ -108,6 +113,15 @@ int main(int argc, char** argv) {
 					else
 						cout<<"The graph is not semi connected!"<<endl;
 				}
+				break;
+			case 8:
+				graph2 = graph->compress_graph();
+				cout<<"The adjacency list representation of the compressed graph is: "<<endl;
+				graph2->print_graph();
+				graph2->dfs_traversal();
+				cout<<"Please run the below command to create the image:"<<endl;
+				cout<<"step 1: dot -Tpng graph.gv -o compressed_graph.png"<<endl;
+				cout<<"step 2: Open the file compressed_graph.png to view the output."<<endl;
 				break;
 			default:
 				cout<<"Wrong Choice!!"<<endl;
