@@ -174,7 +174,7 @@ void Graph::dfs_traversal(bool visited[], int discovery_time[], int finish_time[
 	
 }
 
-void Graph::dfs_traversal(){
+void Graph::dfs_traversal(int src){
 	FILE *fptr;
 	fptr = fopen("graph.gv","w");
 	fprintf(fptr,"digraph G {\n");
@@ -192,6 +192,10 @@ void Graph::dfs_traversal(){
 		finish_time[i] = 0;
 	}
 	
+	// Call DFS from the src vertex first
+	dfs_traversal(visited, discovery_time, finish_time, src, fptr);
+	
+	// Call DFS for other vertices if required
 	for(int i=0;i<V;i++){
 		if(!visited[i])
 			dfs_traversal(visited, discovery_time, finish_time, i, fptr);

@@ -117,8 +117,12 @@ int main(int argc, char** argv) {
 					graph->print_graph();
 				break;
 			case 4:
-				if(graph != NULL)
-					graph->dfs_traversal();
+				if(graph != NULL){
+					cout<<"Enter the vertex from where DFS neds to start: ";
+					cin >> element;
+					graph->dfs_traversal(element);
+				}
+					
 				break;
 			case 5:
 				shortes_path(graph);
@@ -152,7 +156,7 @@ int main(int argc, char** argv) {
 				graph2 = graph->compress_graph();
 				cout<<"The adjacency list representation of the compressed graph is: "<<endl;
 				graph2->print_graph();
-				graph2->dfs_traversal();
+				graph2->dfs_traversal(0);
 				cout<<"Please run the below command to create the image:"<<endl;
 				cout<<"step 1: dot -Tpng graph.gv -o compressed_graph.png"<<endl;
 				cout<<"step 2: Open the file compressed_graph.png to view the output."<<endl;
