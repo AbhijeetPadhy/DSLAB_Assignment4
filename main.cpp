@@ -16,7 +16,9 @@ Graph *read_from_file(){
 	Graph *graph = NULL;
 	char filename[255] = "input_file_7.txt";
 	cout<<"Enter the filename: ";
+	fflush(stdin);
 	cin>>filename;
+	fflush(stdin);
 	do{
 		cout<< "Does the input file include weights?"<<endl;
 		cout<< "1. Yes"<<endl;

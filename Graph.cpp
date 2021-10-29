@@ -37,8 +37,8 @@ void Graph::dijsktras_shortest_path_algorithm(int S, int D){
 	min_heap *heap = new min_heap(V);
 	int dist[V];
 	int parent[V];
-	memset(parent, -1, sizeof(parent));
 	for(int i=0;i<V;i++){
+		parent[i] = -1;
 		dist[i] = INT_MAX;
 		if(i == S)
 			dist[i] = 0;
@@ -183,14 +183,14 @@ void Graph::dfs_traversal(){
 	cur_time = 0;
 	
 	bool visited[V];
-	memset(visited, false, sizeof(visited));
-	
 	int discovery_time[V];
-	memset(discovery_time, 0, sizeof(discovery_time));
-	
 	int finish_time[V];
-	memset(finish_time, 0, sizeof(finish_time));
 	
+	for(int i=0;i<V;i++){
+		visited[i] = false;
+		discovery_time[i] = 0;
+		finish_time[i] = 0;
+	}
 	
 	for(int i=0;i<V;i++){
 		if(!visited[i])
@@ -239,7 +239,6 @@ void Graph::find_scc(int u, bool visited[], int disc[], bool stackArray[], stack
 			low[u] = (low[u] < disc[v])? low[u] : disc[v];
 		}
 	}
-	
 	// Head Node
 	if(low[u] == disc[u]){
 		vector<int> *sccs = new vector<int>();
@@ -286,16 +285,16 @@ vector<vector<int>> *Graph::find_scc(){
 	cur_time = 0;
 	
 	bool *visited = new bool[V];
-	memset(visited, false, sizeof(visited));
-	
 	int *disc = new int[V];
-	memset(disc, 0, sizeof(disc));
-	
-	bool *stackArray = new bool[V];
-	memset(stackArray, false, sizeof(stackArray));
-	
 	int *low = new int[V];
-	memset(low, 0, sizeof(low));
+	bool *stackArray = new bool[V];
+	
+	for(int i=0;i<V;i++){
+		visited[i] = false;
+		disc[i] = 0;
+		stackArray[i] = false;
+		low[i] = 0;
+	}
 	
 	stack<int> *stk = new stack<int>();
 	vector<vector<int>> *result = new vector<vector<int>>();
@@ -323,10 +322,14 @@ int *Graph::topo_sort(Graph *graph){
 	int vertices = graph->V;
 	stack<int> *stk = new stack<int>();
 	bool *visited = new bool[vertices];
-	memset(visited, false, sizeof(visited));
 	int *result = new int[vertices];
 	int top = -1;
 	
+	for(int i=0;i<vertices;i++){
+		visited[i] = false;
+		result[i] = 0;
+	}
+
 	for(int u=0;u<vertices;u++){
 		if(!visited[u])
 			topoSortUtil(u, graph, stk, visited);
@@ -442,7 +445,10 @@ void Graph::remove_edge(int u, int v){
 
 bool Graph::path_possible(Graph *graph, int u, int v, int e1, int e2){
 	bool *visited = new bool[V];
-	memset(visited, false, sizeof(visited));
+
+	for(int i=0;i<V;i++)
+		visited[i] = false;
+
 	list<int> queue;
 	
 	visited[u] = true;
@@ -470,7 +476,10 @@ bool Graph::path_possible(Graph *graph, int u, int v, int e1, int e2){
 
 void Graph::remove_edges_from_components(Graph *graph, vector<vector<int>> *vector_of_scc, int component, int *scc_of_nodes){
 	bool scc_connect[vector_of_scc->size()];
-	memset(scc_connect, false, sizeof(scc_connect));
+
+	for(int i=0;i<vector_of_scc->size();i++)
+		scc_connect[i] = false;
+
 	for(int i=0;i<vector_of_scc->at(component).size();i++){
 		
 		int u = vector_of_scc->at(component).at(i);
