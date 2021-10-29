@@ -36,11 +36,51 @@ Graph *read_from_file(){
 	return graph;
 }
 
+void shortes_path(Graph *graph){
+	int choice = 0;
+	int src=0, dest=0;
+	
+	if(graph == NULL){
+		cout<<"Graph is empty, first create a graph and then use this option to find out shortest distance."<<endl;
+		return;
+	}
+	
+	cout<<"Note that graph contains "<<graph->get_num_vertices()<< " vertices which are named 0 to "<<graph->get_num_vertices()-1<<endl;
+	cout<<"Hence donot enter any node value other than 0 to "<<graph->get_num_vertices()-1<<endl;
+	cout<<"Enter the source vertex: ";
+	cin>>src;
+	do{
+		cout<<"Do you want to enter a destination node as well?"<<endl;
+		cout<<"1. Yes"<<endl;
+		cout<< "2. No"<<endl;
+		cout<<"\nPress 0 to quit.";
+		cout<<"\nEnter Your Choice: ";
+		cin>>choice;
+		if(choice == 1){
+			cout<<"Enter the destination vertex: ";
+			cin>>dest;
+			graph->dijsktras_shortest_path_algorithm(src, dest);
+		}
+		else if(choice == 2){
+			graph->dijsktras_shortest_path_algorithm(src);
+		}
+	}while(choice != 0 && choice != 1 && choice != 2);
+	
+	if(choice != 0){
+		cout<<"\nPlease run the below command to create the image:"<<endl;
+		cout<<"step 1: dot -Tpng dijsktra_output.gv -o dijsktra_output.png"<<endl;
+		cout<<"step 2: Open the file dijsktra_output.png to view the output."<<endl;
+	}else
+		cout<<"You have opted to quit, hence there is nothing to output."<<endl;
+	
+}
+
 int main(int argc, char** argv) {
 	Graph *graph = NULL;
 	Graph *graph2 = NULL;
 	int choice = 0;
 	int element = 0;
+	int element2 = -1;
 	
 	do{
 		cout<<"\nThis is an implementation of Graph"<<endl;
@@ -79,15 +119,7 @@ int main(int argc, char** argv) {
 					graph->dfs_traversal();
 				break;
 			case 5:
-				cout<< "Enter the source node: ";
-				cin >> element;
-				if(graph != NULL){
-					graph->dijsktras_shortest_path_algorithm(element);
-					cout<<"Please run the below command to create the image:"<<endl;
-					cout<<"step 1: dot -Tpng dijsktra_output.gv -o dijsktra_output.png"<<endl;
-					cout<<"step 2: Open the file dijsktra_output.png to view the output."<<endl;
-				}
-					
+				shortes_path(graph);
 				break;
 			case 6:
 				if(graph != NULL){

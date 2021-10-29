@@ -16,7 +16,7 @@ class Graph
 {
 	int V;
 	vector<pair<int,int>>* adj;
-	void output_dijsktra(int[]);
+	void output_dijsktra(int[], int[], int, int);
 	int cur_time = 0;
 	void dfs_traversal(bool[], int[], int[], int, FILE *);
 	void find_scc(int, bool[], int[], bool[], stack<int>*, int[], vector<vector<int>>*);
@@ -34,6 +34,7 @@ class Graph
 		int add_edge(int, int, int);
 		int get_num_vertices();
 		void dijsktras_shortest_path_algorithm(int);
+		void dijsktras_shortest_path_algorithm(int, int);
 		void read_from_file(int, char *);
 		void print_graph();
 		void dfs_traversal();

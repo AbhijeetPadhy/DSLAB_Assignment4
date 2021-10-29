@@ -30,8 +30,14 @@ int Graph::get_num_vertices(){
 }
 
 void Graph::dijsktras_shortest_path_algorithm(int S){
+	dijsktras_shortest_path_algorithm(S,-1);
+}
+
+void Graph::dijsktras_shortest_path_algorithm(int S, int D){
 	min_heap *heap = new min_heap(V);
 	int dist[V];
+	int parent[V];
+	memset(parent, -1, sizeof(parent));
 	for(int i=0;i<V;i++){
 		dist[i] = INT_MAX;
 		if(i == S)
@@ -48,36 +54,61 @@ void Graph::dijsktras_shortest_path_algorithm(int S){
             int weight = adj[u.first].at(j).second;
 			if(u.second != INT_MAX && u.second + weight < dist[v]){
                 dist[v] = u.second + weight;
+                parent[v] = u.first;
 				heap->decrease_key(v, dist[v]);
             }
         }
     }
     
-    for(int i=0;i<V;i++){
-    	cout<<"Node "<<i<<" has dist = " << dist[i]<<endl;
-	}
-	output_dijsktra(dist);
+	output_dijsktra(dist, parent, S, D);
 }
 
-void Graph::output_dijsktra(int dist[]){
+void Graph::output_dijsktra(int dist[], int parent[], int S, int D){
 	FILE *fptr;
 	fptr = fopen("dijsktra_output.gv","w");
 	fprintf(fptr,"digraph G {\n");
-
+	set<int> s;
+	
+	if(D != -1){
+		int v = D;
+		while(v != -1 && v != S){
+			s.insert(v);
+			v = parent[v];
+		}
+		s.insert(S);
+	}
+	
 	for(int u=0;u<V;u++){
-		if(dist[u] != INT_MAX)
-			fprintf(fptr,"%d [label = \" %d / %d \"];\n", u, u, dist[u]);
+		if(dist[u] != INT_MAX){
+			if(u == S)
+				fprintf(fptr,"%d [shape=octagon, color=magenta, label = \" %d / %d \"];\n", u, u, dist[u]);
+			else if(u == D)
+				fprintf(fptr,"%d [shape=octagon, color=brown, label = \" %d / %d \"];\n", u, u, dist[u]);
+			else
+				fprintf(fptr,"%d [label = \" %d / %d \"];\n", u, u, dist[u]);
+		}
+			
 		else
 			fprintf(fptr,"%d [label = \" %d / unreachable \"];\n", u, u);
 		
 		int size = adj[u].size();
 		for(int j=0;j<size;j++){
 			int v = adj[u].at(j).first;
-			fprintf(fptr,"\"%d\" -> \"%d\";\n",u,v);
+			if(D != -1 && s.find(v)!=s.end() && s.find(u)!=s.end() && parent[v] == u)
+				fprintf(fptr,"\"%d\" -> \"%d\" [style=bold, color=red];\n",u,v);
+			else
+				fprintf(fptr,"\"%d\" -> \"%d\";\n",u,v);
 		}
 	}
 	fprintf(fptr,"}");
 	fclose(fptr);
+	
+	
+	// Terminal Output
+	cout<<endl;
+    for(int i=0;i<V;i++){
+    	cout<<"Node "<<i<<" has dist = " << dist[i]<<endl;
+	}
 }
 
 void Graph::read_from_file(int variant, char *filename){
