@@ -118,7 +118,7 @@ int main(int argc, char** argv) {
 				break;
 			case 4:
 				if(graph != NULL){
-					cout<<"Enter the vertex from where DFS neds to start: ";
+					cout<<"Enter the vertex from where DFS needs to start: ";
 					cin >> element;
 					graph->dfs_traversal(element);
 				}
