@@ -26,6 +26,7 @@ class Graph
 	bool path_possible(Graph *, int, int, int, int);
 	Graph *clone_graph();
 	void remove_edge(int, int);
+	int *topo_sort(Graph *graph);
 	
 	public:
 		Graph();
@@ -40,7 +41,6 @@ class Graph
 		void print_graph_graphviz();
 		void dfs_traversal(int);
 		vector<vector<int>> *find_scc();
-		int *topo_sort(Graph *graph);
 		bool is_semi_connected();
 		Graph *compress_graph();
 		~Graph();
