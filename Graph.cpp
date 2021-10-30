@@ -175,7 +175,6 @@ void Graph::print_graph_graphviz(){
 			int w = adj[u].at(j).second;
 			fprintf(fptr,"\"%d\" -> \"%d\" [label = \"%d\"];\n",u,v,w);
 		}
-		cout << endl;
 	}
 	fprintf(fptr,"}");
 	fclose(fptr);

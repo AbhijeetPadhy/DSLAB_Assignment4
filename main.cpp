@@ -77,6 +77,26 @@ void shortes_path(Graph *graph){
 	
 }
 
+Graph *create_new_graph_manually(){
+	int V = 0;
+	int no_of_edges = 0;
+	int u, v, w;
+	cout<<"Enter the number of vertices: ";
+	cin>>V;
+	Graph *graph = new Graph(V);
+	cout<<"Enter the number of edges: ";
+	cin>>no_of_edges;
+	cout<<"Enter the details of all the edges in the following format:"<<endl;
+	cout<<"In each row, details of an edge should be present as such \n<src node> <dest node> <weight>"<<endl;
+	for(int i=0;i<no_of_edges;i++){
+		cin>>u;
+		cin>>v;
+		cin>>w;
+		graph->add_edge(u, v, w);
+	}
+	return graph;
+}
+
 int main(int argc, char** argv) {
 	Graph *graph = NULL;
 	Graph *graph2 = NULL;
@@ -104,6 +124,8 @@ int main(int argc, char** argv) {
 			case 0:
 				break;
 			case 1:
+				delete(graph);
+				graph = create_new_graph_manually();
 				break;
 			case 2:
 				delete(graph);
@@ -163,8 +185,9 @@ int main(int argc, char** argv) {
 				cout<<"step 2: Open the file compressed_graph.png to view the output."<<endl;
 				break;
 			case 9:
-					if(graph!=NULL)
-						graph->print_graph_graphviz();
+				if(graph!=NULL)
+					graph->print_graph_graphviz();
+				break;
 			default:
 				cout<<"Wrong Choice!!"<<endl;
 		}
