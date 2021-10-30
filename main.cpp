@@ -116,7 +116,11 @@ int main(int argc, char** argv) {
 		cout<<"4. Print graph on image using Graphviz."<<endl;
 		cout<<"5. Perform DFS Traversal."<<endl;
 		cout<<"6. Find all strongly connected components using Tarjan's algorithm."<<endl;
-		cout<<"7. Compress the graph."<<endl;
+		cout<<"7. Create another graph G'(V, E') from the existing graph G(V, E) such that "<<endl;
+		cout<<"       -> E' is a subset of E and"<<endl;
+		cout<<"       -> G' has the same SCCs as G and"<<endl;
+		cout<<"       -> G' has the same component graph as G and"<<endl;
+		cout<<"       -> E' is as small as possible."<<endl;
 		cout<<"8. Determine whether graph is semi-connected."<<endl;
 		cout<<"9. Compute shortest distance from a node using Dijsktra's Algorithm."<<endl;
 		cout<<"\nPress 0 to quit.";
@@ -206,7 +210,7 @@ int main(int argc, char** argv) {
 				if(graph != NULL){
 					cout<<"The edges which are removed are:"<<endl;
 					graph2 = graph->compress_graph();
-					cout<<"\nThe adjacency list representation of the compressed graph is: "<<endl;
+					cout<<"\nThe adjacency list representation of the new graph is: "<<endl;
 					graph2->print_graph();
 					graph2->print_graph_graphviz();
 					cout<<"\nPlease run the below command to create the image:"<<endl;
