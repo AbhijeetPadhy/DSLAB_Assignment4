@@ -40,9 +40,11 @@ void Graph::dijsktras_shortest_path_algorithm(int S, int D){
 	min_heap *heap = new min_heap(V);
 	int dist[V];
 	int parent[V];
+	int finalised[V];
 	for(int i=0;i<V;i++){
 		parent[i] = -1;
 		dist[i] = INT_MAX;
+		finalised[i] = false;
 		if(i == S)
 			dist[i] = 0;
 		heap->push(make_pair(i, dist[i]));
@@ -50,12 +52,13 @@ void Graph::dijsktras_shortest_path_algorithm(int S, int D){
 	
 	while(heap->size() != 0){
         pair<int,int> u = heap->pop();
+        finalised[u.first] = true;
         int no_of_adj_nodes = adj[u.first].size();
         
 		for(int j=0;j<no_of_adj_nodes;j++){
             int v = adj[u.first].at(j).first;
             int weight = adj[u.first].at(j).second;
-			if(u.second != INT_MAX && u.second + weight < dist[v]){
+			if(!finalised[v] && u.second != INT_MAX && u.second + weight < dist[v]){
                 dist[v] = u.second + weight;
                 parent[v] = u.first;
 				heap->decrease_key(v, dist[v]);
