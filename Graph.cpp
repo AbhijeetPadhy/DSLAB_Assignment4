@@ -81,23 +81,29 @@ void Graph::output_dijsktra(int dist[], int parent[], int S, int D){
 	for(int u=0;u<V;u++){
 		if(dist[u] != INT_MAX){
 			if(u == S)
-				fprintf(fptr,"%d [shape=octagon, color=magenta, label = \" %d / %d \"];\n", u, u, dist[u]);
+				fprintf(fptr,"%d [shape=doubleoctagon, color=magenta, label = \" %d / %d \"];\n", u, u, dist[u]);
 			else if(u == D)
-				fprintf(fptr,"%d [shape=octagon, color=brown, label = \" %d / %d \"];\n", u, u, dist[u]);
+				fprintf(fptr,"%d [shape=doubleoctagon, color=brown, label = \" %d / %d \"];\n", u, u, dist[u]);
 			else
 				fprintf(fptr,"%d [label = \" %d / %d \"];\n", u, u, dist[u]);
 		}
 			
-		else
-			fprintf(fptr,"%d [label = \" %d / unreachable \"];\n", u, u);
+		else{
+			if(u == D)
+				fprintf(fptr,"%d [shape=doubleoctagon, color=brown, label = \" %d / unreachable \"];\n", u, u);
+			else
+				fprintf(fptr,"%d [label = \" %d / unreachable \"];\n", u, u);
+		}
+			
 		
 		int size = adj[u].size();
 		for(int j=0;j<size;j++){
 			int v = adj[u].at(j).first;
+			int w = adj[u].at(j).second;
 			if(D != -1 && s.find(v)!=s.end() && s.find(u)!=s.end() && parent[v] == u)
-				fprintf(fptr,"\"%d\" -> \"%d\" [style=bold, color=red];\n",u,v);
+				fprintf(fptr,"\"%d\" -> \"%d\" [style=bold, color=red, label=%d];\n",u,v,w);
 			else
-				fprintf(fptr,"\"%d\" -> \"%d\";\n",u,v);
+				fprintf(fptr,"\"%d\" -> \"%d\" [label=%d];\n",u,v,w);
 		}
 	}
 	fprintf(fptr,"}");
