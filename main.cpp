@@ -90,7 +90,8 @@ int main(int argc, char** argv) {
 		cout<<"1. Create a new graph manually."<<endl;
 		cout<<"2. Create a new graph from file input."<<endl;
 		cout<<"3. Print graph on terminal."<<endl;
-		cout<<"4. Print graph on image using Graphviz."<<endl;
+		cout<<"4. Perform DFS Traversal."<<endl;
+		cout<<"9. Print graph on image using Graphviz."<<endl;
 		cout<<"5. Compute shortest distance from a node."<<endl;
 		cout<<"6. Find all strongly connected components using Tarjan's algorithm."<<endl;
 		cout<<"7. Determine whether graph is semi-connected."<<endl;
@@ -161,6 +162,9 @@ int main(int argc, char** argv) {
 				cout<<"step 1: dot -Tpng graph.gv -o compressed_graph.png"<<endl;
 				cout<<"step 2: Open the file compressed_graph.png to view the output."<<endl;
 				break;
+			case 9:
+					if(graph!=NULL)
+						graph->print_graph_graphviz();
 			default:
 				cout<<"Wrong Choice!!"<<endl;
 		}

@@ -37,6 +37,7 @@ class Graph
 		void dijsktras_shortest_path_algorithm(int, int);
 		void read_from_file(int, char *);
 		void print_graph();
+		void print_graph_graphviz();
 		void dfs_traversal(int);
 		vector<vector<int>> *find_scc();
 		int *topo_sort(Graph *graph);

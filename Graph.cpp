@@ -156,6 +156,31 @@ void Graph::print_graph(){
 	}
 }
 
+void Graph::print_graph_graphviz(){
+	if(V == 0)
+		return;
+	
+	FILE *fptr;
+	fptr = fopen("graph.gv","w");
+	fprintf(fptr,"digraph G {\n");
+	
+	for(int i=0;i<V;i++){
+		fprintf(fptr,"%d [label = \" %d \"];\n", i, i);
+	}
+	
+	for(int u=0;u<V;u++){
+		int size = adj[u].size();
+		for(int j=0;j<size;j++){
+			int v = adj[u].at(j).first;
+			int w = adj[u].at(j).second;
+			fprintf(fptr,"\"%d\" -> \"%d\" [label = \"%d\"];\n",u,v,w);
+		}
+		cout << endl;
+	}
+	fprintf(fptr,"}");
+	fclose(fptr);
+}
+
 void Graph::dfs_traversal(bool visited[], int discovery_time[], int finish_time[], int u, FILE *fptr){
 	visited[u] = true;
 	discovery_time[u] = ++cur_time;
