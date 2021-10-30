@@ -117,10 +117,24 @@ void Graph::output_dijsktra(int dist[], int parent[], int S, int D){
 	
 	
 	// Terminal Output
-	cout<<endl;
     for(int i=0;i<V;i++){
     	cout<<"Node "<<i<<" has dist = " << dist[i]<<endl;
 	}
+	
+	int path[V];
+	int i=0, v=D;
+	if(D != -1){
+		while(v != S){
+			path[i++] = v;
+			v = parent[v];
+		}
+		cout<<"\nThe shortest cost path from vertex "<<S<<" to "<<D<<" is "<<endl;
+		cout<<S<<"->";
+		for(int j=0;j<i;j++)
+			cout<<path[i-j-1]<<"->";
+		cout<<endl;
+	}
+	
 }
 
 void Graph::read_from_file(int variant, char *filename){

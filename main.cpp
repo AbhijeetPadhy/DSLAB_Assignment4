@@ -38,7 +38,7 @@ Graph *read_from_file(){
 	return graph;
 }
 
-void shortes_path(Graph *graph){
+void shortest_path(Graph *graph){
 	int choice = 0;
 	int src=0, dest=0;
 	
@@ -61,11 +61,11 @@ void shortes_path(Graph *graph){
 		if(choice == 1){
 			cout<<"Enter the destination vertex: ";
 			cin>>dest;
-			cout<<"The distances of all the vertices from src vertex "<< src <<" are:"<<endl;
+			cout<<"\nThe distances of all the vertices from src vertex "<< src <<" are:"<<endl;
 			graph->dijsktras_shortest_path_algorithm(src, dest);
 		}
 		else if(choice == 2){
-			cout<<"The distances of all the vertices from src vertex "<< src <<" are:"<<endl;
+			cout<<"\nThe distances of all the vertices from src vertex "<< src <<" are:"<<endl;
 			graph->dijsktras_shortest_path_algorithm(src);
 		}
 	}while(choice != 0 && choice != 1 && choice != 2);
@@ -144,6 +144,8 @@ int main(int argc, char** argv) {
 					cout<<"Graph has been successfully initialised from file input."<<endl;
 				}catch(const char *msg){
 					cout<< msg << endl;
+					delete(graph);
+					graph = NULL;
 				}
 				break;
 			case 3:
@@ -152,7 +154,7 @@ int main(int argc, char** argv) {
 					cout<<"The adjacency list of the graph is: "<<endl;
 					graph->print_graph();
 				}else{
-					cout<<"The graph is not initialised with data."<<endl;
+					cout<<"\nThe graph is not initialised with data."<<endl;
 					cout<<"Please use options 1 or 2 to first feed data into the graph."<<endl;
 				}
 				break;
@@ -160,12 +162,12 @@ int main(int argc, char** argv) {
 				// Print graph on image using Graphviz.
 				if(graph!=NULL){
 					graph->print_graph_graphviz();
-					cout<<"Please run the below command to create the image:"<<endl;
+					cout<<"\nPlease run the below command to create the image:"<<endl;
 					cout<<"step 1: dot -Tpng graph.gv -o graph.png"<<endl;
 					cout<<"step 2: Open the file graph.png to view the output."<<endl;
 				}
 				else{
-					cout<<"The graph is not initialised with data."<<endl;
+					cout<<"\nThe graph is not initialised with data."<<endl;
 					cout<<"Please use options 1 or 2 to first feed data into the graph."<<endl;
 				}
 				break;
@@ -175,11 +177,11 @@ int main(int argc, char** argv) {
 					cout<<"Enter the vertex from where DFS needs to start: ";
 					cin >> element;
 					graph->dfs_traversal(element);
-					cout<<"Please run the below command to create the image:"<<endl;
+					cout<<"\nPlease run the below command to create the image:"<<endl;
 					cout<<"step 1: dot -Tpng dfs_traversal.gv -o dfs_traversal.png"<<endl;
 					cout<<"step 2: Open the file dfs_traversal.png to view the output."<<endl;
 				}else{
-					cout<<"The graph is not initialised with data."<<endl;
+					cout<<"\nThe graph is not initialised with data."<<endl;
 					cout<<"Please use options 1 or 2 to first feed data into the graph."<<endl;
 				}
 				break;
@@ -197,11 +199,11 @@ int main(int argc, char** argv) {
 						}
 						cout<<endl;
 					}
-					cout<<"Please run the below command to create the image:"<<endl;
+					cout<<"\nPlease run the below command to create the image:"<<endl;
 					cout<<"step 1: dot -Tpng tarjan.gv -o tarjan.png"<<endl;
 					cout<<"step 2: Open the file tarjan.png to view the output."<<endl;
 				}else{
-					cout<<"The graph is not initialised with data."<<endl;
+					cout<<"\nThe graph is not initialised with data."<<endl;
 					cout<<"Please use options 1 or 2 to first feed data into the graph."<<endl;
 				}
 				break;
@@ -230,17 +232,17 @@ int main(int argc, char** argv) {
 					else
 						cout<<"The graph is not semi connected!"<<endl;
 				}else{
-					cout<<"The graph is not initialised with data."<<endl;
+					cout<<"\nThe graph is not initialised with data."<<endl;
 					cout<<"Please use options 1 or 2 to first feed data into the graph."<<endl;
 				}
 				break;
 			case 9:
 				// Compute shortest distance from a node using Dijsktra's Algorithm.
 				if(graph != NULL){
-					shortes_path(graph);
+					shortest_path(graph);
 				}
 				else{
-					cout<<"The graph is not initialised with data."<<endl;
+					cout<<"\nThe graph is not initialised with data."<<endl;
 					cout<<"Please use options 1 or 2 to first feed data into the graph."<<endl;
 				}
 				break;
