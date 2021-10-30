@@ -61,9 +61,11 @@ void shortes_path(Graph *graph){
 		if(choice == 1){
 			cout<<"Enter the destination vertex: ";
 			cin>>dest;
+			cout<<"The distances of all the vertices from src vertex "<< src <<" are:"<<endl;
 			graph->dijsktras_shortest_path_algorithm(src, dest);
 		}
 		else if(choice == 2){
+			cout<<"The distances of all the vertices from src vertex "<< src <<" are:"<<endl;
 			graph->dijsktras_shortest_path_algorithm(src);
 		}
 	}while(choice != 0 && choice != 1 && choice != 2);
@@ -88,6 +90,7 @@ Graph *create_new_graph_manually(){
 	cin>>no_of_edges;
 	cout<<"Enter the details of all the edges in the following format:"<<endl;
 	cout<<"In each row, details of an edge should be present as such \n<src node> <dest node> <weight>"<<endl;
+	cout<<"Note: src node and dest node should be between "<<0<<" and "<<V-1<<endl;
 	for(int i=0;i<no_of_edges;i++){
 		cin>>u;
 		cin>>v;
@@ -110,53 +113,81 @@ int main(int argc, char** argv) {
 		cout<<"1. Create a new graph manually."<<endl;
 		cout<<"2. Create a new graph from file input."<<endl;
 		cout<<"3. Print graph on terminal."<<endl;
-		cout<<"4. Perform DFS Traversal."<<endl;
-		cout<<"9. Print graph on image using Graphviz."<<endl;
-		cout<<"5. Compute shortest distance from a node."<<endl;
+		cout<<"4. Print graph on image using Graphviz."<<endl;
+		cout<<"5. Perform DFS Traversal."<<endl;
 		cout<<"6. Find all strongly connected components using Tarjan's algorithm."<<endl;
-		cout<<"7. Determine whether graph is semi-connected."<<endl;
-		cout<<"8. Compress the graph."<<endl;
+		cout<<"7. Compress the graph."<<endl;
+		cout<<"8. Determine whether graph is semi-connected."<<endl;
+		cout<<"9. Compute shortest distance from a node using Dijsktra's Algorithm."<<endl;
 		cout<<"\nPress 0 to quit.";
 		cout<<"\nEnter Your Choice: ";
 		cin>>choice;
 		cout<<"\n------------------OPERATION-------------------"<<endl;
 		switch(choice){
 			case 0:
+				// Quit Case
 				break;
 			case 1:
+				// Create a new graph manually.
 				delete(graph);
 				graph = create_new_graph_manually();
 				break;
 			case 2:
+				// Create a new graph from file input.
 				delete(graph);
 				try{
 					graph = read_from_file();
+					cout<<"Graph has been successfully initialised from file input."<<endl;
 				}catch(const char *msg){
 					cout<< msg << endl;
 				}
 				break;
 			case 3:
-				if(graph != NULL)
+				// Print graph on terminal.
+				if(graph != NULL){
+					cout<<"The adjacency list of the graph is: "<<endl;
 					graph->print_graph();
+				}else{
+					cout<<"The graph is not initialised with data."<<endl;
+					cout<<"Please use options 1 or 2 to first feed data into the graph."<<endl;
+				}
 				break;
 			case 4:
+				// Print graph on image using Graphviz.
+				if(graph!=NULL){
+					graph->print_graph_graphviz();
+					cout<<"Please run the below command to create the image:"<<endl;
+					cout<<"step 1: dot -Tpng graph.gv -o graph.png"<<endl;
+					cout<<"step 2: Open the file graph.png to view the output."<<endl;
+				}
+				else{
+					cout<<"The graph is not initialised with data."<<endl;
+					cout<<"Please use options 1 or 2 to first feed data into the graph."<<endl;
+				}
+				break;
+			case 5:
+				// Perform DFS Traversal.
 				if(graph != NULL){
 					cout<<"Enter the vertex from where DFS needs to start: ";
 					cin >> element;
 					graph->dfs_traversal(element);
+					cout<<"Please run the below command to create the image:"<<endl;
+					cout<<"step 1: dot -Tpng dfs_traversal.gv -o dfs_traversal.png"<<endl;
+					cout<<"step 2: Open the file dfs_traversal.png to view the output."<<endl;
+				}else{
+					cout<<"The graph is not initialised with data."<<endl;
+					cout<<"Please use options 1 or 2 to first feed data into the graph."<<endl;
 				}
-					
-				break;
-			case 5:
-				shortes_path(graph);
 				break;
 			case 6:
+				// Find all strongly connected components using Tarjan's algorithm.
 				if(graph != NULL){
 					vector<vector<int>> *result = graph->find_scc();
 					cout<<"The strongly connected components are: "<<endl;
 					int no_of_scc = result->size();
 					for(int i=0;i<no_of_scc;i++){
 						int size_of_scc = result->at(i).size();
+						cout<<"Component #"<<i+1<<": ";
 						for(int j=0;j<size_of_scc;j++){
 							cout << result->at(i).at(j) << " ";
 						}
@@ -165,28 +196,49 @@ int main(int argc, char** argv) {
 					cout<<"Please run the below command to create the image:"<<endl;
 					cout<<"step 1: dot -Tpng tarjan.gv -o tarjan.png"<<endl;
 					cout<<"step 2: Open the file tarjan.png to view the output."<<endl;
-				}	
+				}else{
+					cout<<"The graph is not initialised with data."<<endl;
+					cout<<"Please use options 1 or 2 to first feed data into the graph."<<endl;
+				}
 				break;
 			case 7:
+				// Compress the graph.
+				if(graph != NULL){
+					cout<<"The edges which are removed are:"<<endl;
+					graph2 = graph->compress_graph();
+					cout<<"\nThe adjacency list representation of the compressed graph is: "<<endl;
+					graph2->print_graph();
+					graph2->print_graph_graphviz();
+					cout<<"\nPlease run the below command to create the image:"<<endl;
+					cout<<"step 1: dot -Tpng graph.gv -o compressed_graph.png"<<endl;
+					cout<<"step 2: Open the file compressed_graph.png to view the output."<<endl;
+				}else{
+					cout<<"The graph is not initialised with data."<<endl;
+					cout<<"Please use options 1 or 2 to first feed data into the graph."<<endl;
+				}
+				
+				break;
+			case 8:
+				// Determine whether graph is semi-connected.
 				if(graph != NULL){
 					if(graph->is_semi_connected())
 						cout<<"The graph is semi connected!"<<endl;
 					else
 						cout<<"The graph is not semi connected!"<<endl;
+				}else{
+					cout<<"The graph is not initialised with data."<<endl;
+					cout<<"Please use options 1 or 2 to first feed data into the graph."<<endl;
 				}
 				break;
-			case 8:
-				graph2 = graph->compress_graph();
-				cout<<"The adjacency list representation of the compressed graph is: "<<endl;
-				graph2->print_graph();
-				graph2->dfs_traversal(0);
-				cout<<"Please run the below command to create the image:"<<endl;
-				cout<<"step 1: dot -Tpng graph.gv -o compressed_graph.png"<<endl;
-				cout<<"step 2: Open the file compressed_graph.png to view the output."<<endl;
-				break;
 			case 9:
-				if(graph!=NULL)
-					graph->print_graph_graphviz();
+				// Compute shortest distance from a node using Dijsktra's Algorithm.
+				if(graph != NULL){
+					shortes_path(graph);
+				}
+				else{
+					cout<<"The graph is not initialised with data."<<endl;
+					cout<<"Please use options 1 or 2 to first feed data into the graph."<<endl;
+				}
 				break;
 			default:
 				cout<<"Wrong Choice!!"<<endl;

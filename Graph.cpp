@@ -18,8 +18,11 @@ int Graph::add_edge(int src, int dest){
 }
 
 int Graph::add_edge(int src, int dest, int weight){
-	if(src >= V || src < 0 || dest >= V || dest < 0)
+	if(src >= V || src < 0 || dest >= V || dest < 0){
+		cout<<"Src and Dest node of an edge should be between 0 and "<<V-1<<endl;
+		cout<<"Your edge consists of nodes outside this range."<<endl;
 		return 1;
+	}
 	pair<int, int> edge(dest, weight);
 	adj[src].push_back(edge);
 	return 0;
@@ -147,10 +150,10 @@ void Graph::print_graph(){
 		return;
 		
 	for(int i=0;i<V;i++){
-		cout << i;
+		cout << i << " : ";
 		int size = adj[i].size();
 		for(int j=0;j<size;j++){
-			cout<< "->" <<adj[i].at(j).first;
+			cout<< adj[i].at(j).first << "->";
 		}
 		cout << endl;
 	}
@@ -206,7 +209,7 @@ void Graph::dfs_traversal(bool visited[], int discovery_time[], int finish_time[
 
 void Graph::dfs_traversal(int src){
 	FILE *fptr;
-	fptr = fopen("graph.gv","w");
+	fptr = fopen("dfs_traversal.gv","w");
 	fprintf(fptr,"digraph G {\n");
 	//fprintf(fptr,"node [shape = record,height=.1];\n");
 	
