@@ -355,7 +355,8 @@ void Graph::output_scc(vector<vector<int> > *scc){
 		int size = adj[u].size();
 		for(int j=0;j<size;j++){
 			int v = adj[u].at(j).first;
-			fprintf(fptr,"\"%d\" -> \"%d\";\n",u,v);
+			int w = adj[u].at(j).second;
+			fprintf(fptr,"\"%d\" -> \"%d\" [label = \"%d\"];\n",u,v,w);
 		}
 	}
 	fprintf(fptr,"}");
