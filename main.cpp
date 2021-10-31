@@ -7,7 +7,7 @@ using namespace std;
 Graph *read_from_file(){
 	int choice = 0;
 	Graph *graph = NULL;
-	char filename[255] = "input_file_7.txt";
+	char filename[255] = "input.txt";
 	cout<<"Enter the filename: ";
 	fflush(stdin);
 	cin>>filename;
