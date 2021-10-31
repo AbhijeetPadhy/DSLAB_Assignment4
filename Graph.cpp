@@ -120,7 +120,10 @@ void Graph::output_dijsktra(int dist[], int parent[], int S, int D){
 	
 	// Terminal Output
     for(int i=0;i<V;i++){
-    	cout<<"Node "<<i<<" has dist = " << dist[i]<<endl;
+    	if(dist[i] == INT_MAX)
+    		cout<<"Node "<<i<<" is unreachable " <<endl;
+    	else
+			cout<<"Node "<<i<<" has dist = " << dist[i]<<endl;
 	}
 	
 	int path[V];
