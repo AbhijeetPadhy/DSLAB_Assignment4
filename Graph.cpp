@@ -5,7 +5,6 @@ Graph::Graph()
 {
 	V = 0;
 	cur_time = 0;
-	//adj = new vector<pair<int,int>>[V];
 }
 
 Graph::Graph(int v)
@@ -237,7 +236,6 @@ void Graph::dfs_traversal(int src){
 	FILE *fptr;
 	fptr = fopen("dfs_traversal.gv","w");
 	fprintf(fptr,"digraph G {\n");
-	//fprintf(fptr,"node [shape = record,height=.1];\n");
 	
 	cur_time = 0;
 	
@@ -426,7 +424,6 @@ bool Graph::is_semi_connected(){
 			int v = adj[u].at(i).first;
 			int src = scc_of_nodes[u];
 			int dest = scc_of_nodes[v];
-			//cout<<"src = "<<src<<" dest = "<<dest<< " u = "<<u<<" v = "<<v<< endl;
 			if(src != dest){
 				component_graph->add_edge(src,dest);
 			}
@@ -434,33 +431,16 @@ bool Graph::is_semi_connected(){
 	}
 	
 	//topological sort
-	//cout<<"Toposort: ";
 	int *topo_sorted_array = topo_sort(component_graph);
-	//for(int i=0;i<no_of_scc;i++)
-		//cout<<topo_sorted_array[i]<<" ";
-	//cout<<endl;
-	
-	/*
-	for(int i=0;i<no_of_scc;i++){
-		cout << i;
-		int size = component_graph->adj[i].size();
-		for(int j=0;j<size;j++){
-			cout<< "->" <<component_graph->adj[i].at(j).first;
-		}
-		cout << endl;
-	}
-	*/
-	
+
 	bool flag = false;
 	for(int i=0;i<no_of_scc-1;i++){
 		int u = topo_sorted_array[i];
 		int next_node = topo_sorted_array[i+1];
-		//cout<<"Checking u="<<u<<" next_node = "<<next_node<<endl;
 		int no_of_adj_nodes = component_graph->adj[u].size();
 		flag = false;
 		for(int j=0;j<no_of_adj_nodes;j++){
 			int v = component_graph->adj[u].at(j).first;
-			//cout<<"Checking u = "<<u<<" v="<<v<<" next_node = "<<next_node<<endl;
 			if(v == next_node){
 				flag = true;
 				break;

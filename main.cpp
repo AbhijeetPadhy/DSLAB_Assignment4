@@ -1,10 +1,3 @@
-/*
- * TODO
- * -----------------------
- * 1. what if an edge is already present!
- * 2. Modify Dijsktra to include dest vertex!
- */
-
 #include <iostream>
 #include "Graph.h"
 
