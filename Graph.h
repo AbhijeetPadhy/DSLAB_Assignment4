@@ -15,14 +15,14 @@ class MyComp{
 class Graph
 {
 	int V;
-	vector<pair<int,int>>* adj;
+	vector<pair<int,int> >* adj;
 	void output_dijsktra(int[], int[], int, int);
-	int cur_time = 0;
+	int cur_time;
 	void dfs_traversal(bool[], int[], int[], int, FILE *);
-	void find_scc(int, bool[], int[], bool[], stack<int>*, int[], vector<vector<int>>*);
+	void find_scc(int, bool[], int[], bool[], stack<int>*, int[], vector<vector<int> >*);
 	void topoSortUtil(int, Graph *, stack<int> *, bool[]);
-	void output_scc(vector<vector<int>> *);
-	void remove_edges_from_components(Graph *, vector<vector<int>> *, int , int *);
+	void output_scc(vector<vector<int> > *);
+	void remove_edges_from_components(Graph *, vector<vector<int> > *, int , int *);
 	bool path_possible(Graph *, int, int, int, int);
 	Graph *clone_graph();
 	void remove_edge(int, int);
@@ -40,7 +40,7 @@ class Graph
 		void print_graph();
 		void print_graph_graphviz();
 		void dfs_traversal(int);
-		vector<vector<int>> *find_scc();
+		vector<vector<int> > *find_scc();
 		bool is_semi_connected();
 		Graph *compress_graph();
 		~Graph();

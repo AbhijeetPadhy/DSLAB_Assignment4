@@ -188,7 +188,7 @@ int main(int argc, char** argv) {
 			case 6:
 				// Find all strongly connected components using Tarjan's algorithm.
 				if(graph != NULL){
-					vector<vector<int>> *result = graph->find_scc();
+					vector<vector<int> > *result = graph->find_scc();
 					cout<<"The strongly connected components are: "<<endl;
 					int no_of_scc = result->size();
 					for(int i=0;i<no_of_scc;i++){

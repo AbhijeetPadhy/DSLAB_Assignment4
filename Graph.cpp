@@ -4,13 +4,15 @@
 Graph::Graph()
 {
 	V = 0;
+	cur_time = 0;
 	//adj = new vector<pair<int,int>>[V];
 }
 
 Graph::Graph(int v)
 {
 	V = v;
-	adj = new vector<pair<int,int>>[V];
+	adj = new vector<pair<int,int> >[V];
+	cur_time = 0;
 }
 
 int Graph::add_edge(int src, int dest){
@@ -152,7 +154,7 @@ void Graph::read_from_file(int variant, char *filename){
 	fscanf(fptr, "%d", &no_of_vertices);
 	fscanf(fptr, "%d", &no_of_edges);
 	V = no_of_vertices;
-	adj = new vector<pair<int,int>>[V];
+	adj = new vector<pair<int,int> >[V];
 	for(int i=0;i<no_of_edges;i++){
 		fscanf(fptr, "%d", &src);
 		fscanf(fptr, "%d", &dest);
@@ -278,7 +280,7 @@ void Graph::dfs_traversal(int src){
 	fclose(fptr);
 }
 
-void Graph::find_scc(int u, bool visited[], int disc[], bool stackArray[], stack<int> *stk, int low[], vector<vector<int>> *result){
+void Graph::find_scc(int u, bool visited[], int disc[], bool stackArray[], stack<int> *stk, int low[], vector<vector<int> > *result){
 	visited[u] = true;
 	low[u] = disc[u] = ++cur_time;
 	stk->push(u);
@@ -312,7 +314,7 @@ void Graph::find_scc(int u, bool visited[], int disc[], bool stackArray[], stack
 	}
 }
 
-void Graph::output_scc(vector<vector<int>> *scc){
+void Graph::output_scc(vector<vector<int> > *scc){
 	FILE *fptr;
 	fptr = fopen("tarjan.gv","w");
 	fprintf(fptr,"digraph G {\n");
@@ -339,7 +341,7 @@ void Graph::output_scc(vector<vector<int>> *scc){
 	fclose(fptr);
 }
 
-vector<vector<int>> *Graph::find_scc(){
+vector<vector<int> > *Graph::find_scc(){
 	cur_time = 0;
 	
 	bool *visited = new bool[V];
@@ -355,7 +357,7 @@ vector<vector<int>> *Graph::find_scc(){
 	}
 	
 	stack<int> *stk = new stack<int>();
-	vector<vector<int>> *result = new vector<vector<int>>();
+	vector<vector<int> > *result = new vector<vector<int> >();
 	
 	for(int i=0;i<V;i++){
 		if(!visited[i])
@@ -401,7 +403,7 @@ int *Graph::topo_sort(Graph *graph){
 }
 
 bool Graph::is_semi_connected(){
-	vector<vector<int>> *vector_of_scc = find_scc();
+	vector<vector<int> > *vector_of_scc = find_scc();
 	int no_of_scc = vector_of_scc->size();
 	Graph *component_graph = new Graph(no_of_scc);
 	
@@ -482,7 +484,7 @@ Graph *Graph::clone_graph(){
 
 void Graph::remove_edge(int u, int v){
 	cout<<"Removing edge "<<u<<"->"<<v<<endl;
-	vector<pair<int,int>> edges;
+	vector<pair<int,int> > edges;
 	int no_of_adj_nodes = adj[u].size();
 	for(int i=0;i<no_of_adj_nodes;i++){
 		int d = adj[u][i].first;
@@ -532,7 +534,7 @@ bool Graph::path_possible(Graph *graph, int u, int v, int e1, int e2){
 	return false;
 }
 
-void Graph::remove_edges_from_components(Graph *graph, vector<vector<int>> *vector_of_scc, int component, int *scc_of_nodes){
+void Graph::remove_edges_from_components(Graph *graph, vector<vector<int> > *vector_of_scc, int component, int *scc_of_nodes){
 	bool scc_connect[vector_of_scc->size()];
 
 	for(int i=0;i<vector_of_scc->size();i++)
@@ -562,7 +564,7 @@ void Graph::remove_edges_from_components(Graph *graph, vector<vector<int>> *vect
 
 Graph *Graph::compress_graph(){
 	Graph *graph = clone_graph();
-	vector<vector<int>> *vector_of_scc = find_scc();
+	vector<vector<int> > *vector_of_scc = find_scc();
 	int no_of_scc = vector_of_scc->size();
 	
 	int scc_of_nodes[V];
